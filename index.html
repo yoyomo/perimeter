@@ -1,0 +1,247 @@
+<html>
+<head>
+</head>
+<body>
+	<div>
+		Calculate the area of a random object and a given starting point
+	</div>
+
+	<div style="display: inline-block; margin: 10px;">
+		<div style="font-weight: 800;">Example 1:</div>
+		<div style="border: 1px solid "#000000";" id="one"></div>
+		<div id="area-one">
+			Starting Point: <br />
+			area: 
+		</div>
+		<div id="perimeter-one">
+			perimeter: 
+		</div>
+	</div>
+
+	<div style="display: inline-block; margin: 10px;">
+		<div style="font-weight: 800;">Example 2:</div>
+		<div id="two" style="border: 1px solid "#000000";" ></div>
+		<div id="area-two">
+			Starting Point: <br />
+			area: 
+		</div>
+		<div id="perimeter-two">
+			perimeter: 
+		</div>
+	</div>
+
+	<div style="display: inline-block; margin: 10px;">
+		<div style="font-weight: 800;">Example 3:</div>
+		<div id="three" style="border: 1px solid "#000000";" ></div>
+		<div id="area-three">
+			Starting Point: <br />
+			area: 
+		</div>
+		<div id="perimeter-three">
+			perimeter: 
+		</div>
+	</div>
+
+	<div style="display: inline-block; margin: 10px;">
+		<div style="font-weight: 800;">Example 4:</div>
+		<div id="four" style="border: 1px solid "#000000";" ></div>
+		<div id="area-four">
+			Starting Point: <br />
+			area: 
+		</div>
+		<div id="perimeter-four">
+			perimeter: 
+		</div>
+	</div>
+
+<script>
+	let one = [
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	];
+
+	let two = [
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#ffffff", "#ff0000", "#ffffff", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	];
+
+
+	let three = [
+	["#ff0000", "#ff0000", "#ff0000", "#ffffff", "#ffffff", "#ffffff", "#ff0000", "#ff0000", "#ff0000"],
+	["#ff0000", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ff0000"],
+	["#ff0000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#ff0000"],
+	["#ffffff", "#ffffff", "#000000", "#ffffff", "#000000", "#ffffff", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#000000", "#ffffff", "#000000", "#ffffff", "#000000", "#ffffff", "#ffffff"],
+	["#ff0000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#ff0000"],
+	["#ff0000", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ff0000"],
+	["#ff0000", "#ff0000", "#ff0000", "#ffffff", "#ffffff", "#ffffff", "#ff0000", "#ff0000", "#ff0000"],
+	];
+
+	let four = [
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"],
+	];
+
+	let in_bound = (map, x, y) =>{
+  		return (x >= 0 && x < map.length) && (y >= 0 && y < map[0].length) && !!map[x] && !!map[x][y];
+	}
+
+	let surrounded_by_polygon = (map, x, y, original_color, polygon) => {
+	  if (x == 0 || x == map.length - 1 || y == 0 || y == map[0].length - 1){
+	  	return false;
+	  }
+
+	  let index = 0;
+	  let left = 0;
+	  let right = 0;
+	  while (index < map.length){
+	    if (index < x){
+	      left += polygon[index][y] == 1 ? 1 : 0
+	    }
+	    else if (index > x){
+	      right += polygon[index][y] == 1 ? 1 : 0
+	    }
+	    if (right >= 1 && left >= 1) break;
+	    index ++;
+	  }
+
+	  index = 0;
+	  let up = 0;
+	  let down = 0;
+	  while (index < map[0].length) {
+	    if (index < y){
+	      up += polygon[x][index] == 1 ? 1 : 0
+	    }
+	    else if (index > y){
+	      down += polygon[x][index] == 1 ? 1 : 0
+	    }
+	    if (up >= 1 && down >= 1) break;
+	    index ++;
+	  }
+
+	  return up >= 1 && down >= 1 && left >=1 && right >= 1;
+	}
+
+	let get_perimeter_recursive = (map, x, y, original_color, polygon) => {
+	  if (!(in_bound(map,x, y) && map[x][y] == original_color && polygon[x][y] == 1)){
+	  	return 0;
+	  }
+
+	  map[x][y] = !surrounded_by_polygon(map, x, y, original_color, polygon) ? 1 : 0;
+	  perimeter = parseInt(map[x][y]) > 0 ? 1 : 0;
+	  perimeter += get_perimeter_recursive(map, x - 1, y, original_color, polygon);
+	  perimeter += get_perimeter_recursive(map, x + 1, y, original_color, polygon);
+	  perimeter += get_perimeter_recursive(map, x, y - 1, original_color, polygon);
+	  perimeter += get_perimeter_recursive(map, x, y + 1, original_color, polygon);
+	  return perimeter;
+	}
+
+	let find_polygon = (map, x, y, original_color, polygon = null) => {
+  		if (polygon === null) {
+  			polygon = new Array(map.length);
+			for (var i = 0; i < polygon.length; i++) {
+			  polygon[i] = new Array(map[0].length);
+			  for(var j = 0; j < polygon[i].length; j++){
+			  	polygon[i][j] = null;
+			  }
+			}
+  		}
+
+	  if (!(in_bound(map, x, y) && map[x][y] == original_color && polygon[x][y] === null)){
+	    if (in_bound(map, x, y) && polygon[x][y] === null) {
+	    	polygon[x][y] = 0;
+	    }
+    	return polygon;
+	  }
+	  polygon[x][y] = 1;
+	  find_polygon(map, x - 1, y, original_color, polygon);
+	  find_polygon(map, x + 1, y, original_color, polygon);
+	  find_polygon(map, x, y - 1, original_color, polygon);
+	  find_polygon(map, x, y + 1, original_color, polygon);
+	  return polygon;
+	}
+
+	let findPerimeter = (map,x,y) => {
+		let polygon = find_polygon(map,x, y, map[x][y]);
+  		return get_perimeter_recursive(map, x, y, map[x][y], polygon);
+	}
+
+	let findArea = (grid, x, y, originalColor) => {
+		let sum = 0;
+
+		console.log(x, y);
+		if(x >= grid.length || x < 0 || y < 0 || y >= grid[0].length || grid[x][y] !== originalColor || grid[x][y] == null) {
+			return 0;
+		} else {
+			sum += 1;
+			grid[x][y] = null;
+			sum += findArea(grid, x + 1, y, originalColor);
+			sum += findArea(grid, x - 1, y, originalColor);
+			sum +=  findArea(grid, x, y + 1, originalColor);
+			sum += findArea(grid, x, y - 1, originalColor);
+		}
+		return sum;
+	}
+
+	let calc = (grid, parentId, i, j, originalColor) => {
+		document.getElementById("area-" + parentId).innerText = "Starting Point: (" + i + " , " + j + ")" + "\n area: " +  findArea(JSON.parse(grid), i, j, originalColor);
+		document.getElementById("perimeter-" + parentId).innerText = "perimeter: " +  findPerimeter(JSON.parse(grid), i, j);
+	};
+
+	let drawGrid = (grid, parentId) => {
+		let blockSize = 20;
+
+		let result = document.createElement("DIV");
+		result.style.width = (blockSize * grid.length) + 'px';
+		result.style.height = (blockSize * grid[0].length) + 'px';
+
+
+
+		for(let i = 0; i < grid.length; ++i){
+			for(let j = 0; j < grid[0].length; ++j) {
+				let div = document.createElement("DIV");
+				div.style.width= blockSize + 'px';
+				div.style.height= blockSize + 'px';
+				div.style.display="inline-block"
+				div.style.backgroundColor=grid[i][j];
+				div.onclick = () => {
+					calc(JSON.stringify(grid), parentId, i, j, grid[i][j]);
+				}
+
+				result.appendChild(div);
+			}
+		}
+		document.getElementById(parentId).appendChild(result);
+	}
+
+	drawGrid(one, "one");
+	drawGrid(two, "two");
+	drawGrid(three, "three");
+	drawGrid(four, "four");
+
+</script>
+
+</body>
+</html>
